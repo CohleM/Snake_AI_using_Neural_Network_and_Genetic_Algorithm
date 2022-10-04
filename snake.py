@@ -50,9 +50,9 @@ def play_snake(parameters):
       if not game_over:
 
         #Input to our Neural Network, X = input, Y = output
-        X = generate_input(s.head,s.body, s.fruit,s.row,s.column)
+        X = generate_input(s.head,s.body, [(s.fruit[0],s.fruit[1] )],s.row,s.column)
         Y = forward_propogation(X, parameters)
-        dir_out = [  (-1,0) , (0,1), (1,0), (0,-1)]    #U R D L 
+        dir_out = [(0,-1),(1,0),(0,1),(-1,0)]    #U R D L 
 
         #Making sure it doesnot run in opposite direction 
         if (-1*s.speedx,-1*s.speedy) == dir_out[np.argmax(Y)]:
@@ -61,18 +61,21 @@ def play_snake(parameters):
             s.speedx, s.speedy = dir_out[c[1]]
         else:
             s.speedx, s.speedy = dir_out[np.argmax(Y)]
+
+        #print([(s.fruit[0],s.fruit[1] )] , ' gg ')
         s.steps +=1
         screen.fill((0,0,0)) 
         
         #When snake eats some fuit
-        if( s.head == s.fruit):
+        if( s.head == [s.fruit[0], s.fruit[1] ] ):
+            print('True Eaten')
             s.ifEaten()
             s.genFruit()
         
         #When it collides with itself or walls
         if s.obstacles() or s.steps >= 200:
             game_over = True
-            s.fitness = s.score + 0.5 + (0.5* ((s.score - (s.steps/(s.score + 1) ))/(s.score + (s.steps/ (s.score + 1) ) ) ) )
+            s.fitness = (s.score + 0.5 + (0.5* ((s.score - (s.steps/(s.score + 1) ))/(s.score + (s.steps/ (s.score + 1) ) ) ) ))*1000000
             return s.fitness,s.score,s.steps
         s.atEachFrame()
 
@@ -88,6 +91,19 @@ def play_snake(parameters):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running = False
+
+            if event.key == pygame.K_LEFT:
+                s.speedx = -1
+                s.speedy = 0
+            elif event.key == pygame.K_RIGHT:
+                s.speedx = 1
+                s.speedy = 0
+            elif event.key == pygame.K_UP:
+                s.speedx = 0
+                s.speedy = -1
+            elif event.key == pygame.K_DOWN:
+                s.speedx = 0
+                s.speedy = 1
         # If the event is "QUIT" (when user clicks X on window)
         if event.type == pygame.QUIT:
           # Set running to False, stop event loop

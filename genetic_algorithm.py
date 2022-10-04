@@ -14,8 +14,42 @@ def find_block(directions,SorF,head):
   return arr
 
 
+# def generate_input(head,snake_body, foods,M,N):
+#   x,y = (head[0],head[1])
+#   d2,d6 = [],[]
+#   #Generating direction coordinates
+#   d1 = [(x-i,y) for i in range(x+1)]
+#   #d2
+#   for i in range(min(M,N)):
+#     if x - i <0 or x - i >9 or y + i < 0 or y + i > 9: break
+#     else: d2.append((x - i,y + i))
+
+#   d3 = [(x,y+i) for i in range(N - y )]
+#   d4=[(x+i,y+i) for i in range(min(M-x,N-y))]
+#   d5 = [(x+i,y) for i in range(M - x)]
+#   #d6
+#   for i in range(min(M,N)):
+#     if x + i <0 or x + i >9 or y - i < 0 or y - i > 9: break
+#     else: d6.append((x + i,y - i))
+
+#   d7 = [(x,y-i) for i in range(y + 1)]
+#   d8 = [(x-i,y-i) for i in range(min(x+1,y+1))]
+
+
+#   d = [d1,d2,d3,d4,d5,d6,d7,d8]
+#   wall = [ (len(i) - 1) /(min(M,N)-1) for i in d]
+#   body = [1 if element == -1 else element/ (min(M,N) - 1) for element in find_block(d,snake_body,(head[0],head[1])) ]
+#   all_foods = [0 if element == -1 else (min(M,N) - element - 1 )/ (min(M,N) - 1) for element in find_block(d,foods,(head[0],head[1])) ]
+#   vision = [element[i] for i in range(8) for element in [wall,body,all_foods]]
+
+#   coordinates = [[0,1,0,0] , [0,0,1,0] , [0,0,0,1] , [1,0,0,0]] #R D L U
+#   dir_out = [(0,1), (1,0), (0,-1) , (-1,0)]
+#   #print(head, ' and ' , snake_body)
+#   head_direction = coordinates[ dir_out.index( (head[0] - snake_body[0][0], head[1] - snake_body[0][1] ))]
+#   return np.array(vision + head_direction).reshape(28,1)
+
 def generate_input(head,snake_body, foods,M,N):
-  x,y = (3,3)
+  x,y = (head[0],head[1])
   d2,d6 = [],[]
   #Generating direction coordinates
   d1 = [(x-i,y) for i in range(x+1)]
@@ -41,13 +75,15 @@ def generate_input(head,snake_body, foods,M,N):
   body = [1 if element == -1 else element/ (min(M,N) - 1) for element in find_block(d,snake_body,(head[0],head[1])) ]
   all_foods = [0 if element == -1 else (min(M,N) - element - 1 )/ (min(M,N) - 1) for element in find_block(d,foods,(head[0],head[1])) ]
   vision = [element[i] for i in range(8) for element in [wall,body,all_foods]]
-
-  coordinates = [[0,1,0,0] , [0,0,1,0] , [0,0,0,1] , [1,0,0,0]] #R D L U
-  dir_out = [(0,1), (1,0), (0,-1) , (-1,0)]
-  #print(head, ' and ' , snake_body)
+  
+  coordinates = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]  #U R D L
+  dir_out = [(0,-1),(1,0),(0,1),(-1,0)]
+  
   head_direction = coordinates[ dir_out.index( (head[0] - snake_body[0][0], head[1] - snake_body[0][1] ))]
-  return np.array(vision + head_direction).reshape(28,1)
 
+  return np.array(vision + head_direction).reshape(28,1)
+  #print(wall, '\n' , body, '\n' , all_foods )
+  print(vision + head_direction)
 
 
 

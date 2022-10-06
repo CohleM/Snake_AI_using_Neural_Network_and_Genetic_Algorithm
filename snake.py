@@ -17,6 +17,9 @@ class Snake:
     
     def genFruit(self):
         self.fruit  =  [random.randint(0,9), random.randint(0,9)]
+        while ( ( self.fruit[0], self.fruit[1])) in self.body or ( ( self.fruit[0], self.fruit[1])) in self.head:
+            print('gg')
+            self.fruit  =  [random.randint(0,9), random.randint(0,9)]
     
     def ifEaten(self):
         self.body.insert(0, (self.head[0], self.head[1])) 
@@ -41,7 +44,7 @@ def play_snake(parameters):
     s.genFruit()
     s.body.append((s.head[0],s.head[1]-1))
     blue,red = (0, 0, 255) , (255, 0, 0) # hex code for blue
-    grid_size,snake_speed = 25,10000
+    grid_size,snake_speed = 25,5
     screen = pygame.display.set_mode((s.column*grid_size, s.row*grid_size))
     s.speedx,s.speedy = 0,-1
     game_over,running = False,True
@@ -73,7 +76,7 @@ def play_snake(parameters):
             s.genFruit()
         
         #When it collides with itself or walls
-        if s.obstacles() or s.steps >= 200:
+        if s.obstacles() or s.steps >= 200 + s.score*13:
             game_over = True
             s.fitness = (s.score + 0.5 + (0.5* ((s.score - (s.steps/(s.score + 1) ))/(s.score + (s.steps/ (s.score + 1) ) ) ) ))*1000000
             return s.fitness,s.score,s.steps

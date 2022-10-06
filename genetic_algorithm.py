@@ -109,39 +109,65 @@ def vector_to_matrix(population, layer_dimension):
 
 
 
-def crossover(parents,weight_length):
-  #parents length is 21, i[m] using uniform crossover 
-  offspring = []
-  for i in range(len(parents)):
-    for j in range(len(parents)):
-      if i == j: continue
-      new_weight = [parents[i][l] if random.uniform(0,1) < 0.5 else parents[j][l] for l in range(weight_length)]
-      offspring.append(new_weight)
-      #print(i,j,new_weight)
-      #420 offspring
-  return offspring
+# def crossover(parents,weight_length):
+#   #parents length is 21, i[m] using uniform crossover 
+#   offspring = []
+#   for i in range(len(parents)):
+#     for j in range(len(parents)):
+#       if i == j: continue
+#       new_weight = [parents[i][l] if random.uniform(0,1) < 0.5 else parents[j][l] for l in range(weight_length)]
+#       offspring.append(new_weight)
+#       #print(i,j,new_weight)
+#       #420 offspring
+#   return offspring
+
+
+# def mutation(offspring):
+#   for l in range(len(offspring)):
+#     for _ in range(15):
+#       x = random.randint(0,len(offspring[0]) - 1 )
+#       value = random.choice(np.arange(-0.5, 0.5 , step = 0.001))
+#       #either change offspring to value or add value to offspring
+#       offspring[l][x] += value
+
+#   n_o = []
+#   for l in range(59):
+#     x = random.randint(0,len(offspring[0]) - 1 )
+#     y = random.randint(0,len(offspring) - 1 )
+#     value = random.choice(np.arange(-0.5, 0.5 , step = 0.001))
+#     new_offspring = offspring[y]
+#     new_offspring[x] += value
+#     #offspring += new_offspring
+#     n_o.append(new_offspring)
+
+#   return np.concatenate( (offspring,n_o), axis = 0 )
+
+
+def crossover1(parants,weights_length):
+    offspring=[]
+    weights_length = 268
+    population_length = 500
+    parants_length = len(parants)
+    Roulette_wheel = [i for i in range(parants_length)]
+    for _ in range(population_length-parants_length):
+        parant1_id=random.choice(Roulette_wheel)
+        parant2_id=random.choice(Roulette_wheel)
+        while parant2_id==parant1_id: parant2_id=random.choice(Roulette_wheel)
+        wts=[parants[parant1_id][i] if random.uniform(0, 1) < 0.5 else parants[parant2_id][i] for i in range(weights_length)]
+        offspring.append(wts)
+    return np.array(offspring)
+
 
 
 def mutation(offspring):
   for l in range(len(offspring)):
-    for _ in range(15):
+    for _ in range(13):
       x = random.randint(0,len(offspring[0]) - 1 )
       value = random.choice(np.arange(-0.5, 0.5 , step = 0.001))
       #either change offspring to value or add value to offspring
       offspring[l][x] += value
 
-  n_o = []
-  for l in range(59):
-    x = random.randint(0,len(offspring[0]) - 1 )
-    y = random.randint(0,len(offspring) - 1 )
-    value = random.choice(np.arange(-0.5, 0.5 , step = 0.001))
-    new_offspring = offspring[y]
-    new_offspring[x] += value
-    #offspring += new_offspring
-    n_o.append(new_offspring)
-
-  return np.concatenate( (offspring,n_o), axis = 0 )
-
+  return offspring
 
 
 #some work remaining in mutation 21, remaining mutation to be done

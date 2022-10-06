@@ -44,7 +44,7 @@ def play_snake(parameters):
     s.genFruit()
     s.body.append((s.head[0],s.head[1]-1))
     blue,red = (0, 0, 255) , (255, 0, 0) # hex code for blue
-    grid_size,snake_speed = 25,5
+    grid_size,snake_speed = 25,10000
     screen = pygame.display.set_mode((s.column*grid_size, s.row*grid_size))
     s.speedx,s.speedy = 0,-1
     game_over,running = False,True
@@ -71,7 +71,7 @@ def play_snake(parameters):
         
         #When snake eats some fuit
         if( s.head == [s.fruit[0], s.fruit[1] ] ):
-            print('True Eaten')
+            #print('True Eaten')
             s.ifEaten()
             s.genFruit()
         

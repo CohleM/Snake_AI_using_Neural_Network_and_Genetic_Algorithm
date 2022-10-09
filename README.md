@@ -34,6 +34,8 @@ We use a simple two layer neural network. The first layer has 8 hidden layers an
 The figure below explains the basic anatomy of snake. The are two part to it.
 
 #### Input to neural network
+
+
 ![brian](/img/brain.png)
 
 The input of our neural network is what the snake sees. Our snake has vision along eight direction d1 to d8. Along each vision, snake sees 3 different things, **Wall**, **Body** and **Food**. Since the neural network only understands numbers we represent them with a metric, 1 for favorable conditions and 0 for unfavorable. 
@@ -42,25 +44,27 @@ The input of our neural network is what the snake sees. Our snake has vision alo
 One is given when no body is present in that direction and Zero is given when no blocks are present in between Head and Body.
 
 
-$body = number_of_blocks_between_head_and_body/(total_number_of_blocks - 1 )$.
+$body = number of blocks between head and body/(total number of blocks - 1 )$.
 
 
 **Metric for Wall:**
 One is given when the number of blocks between Head and Wall are maximum and Zero is given when no blocks are present in between Head and Wall.
 
 
-$Wall = number_of_blocks_between_head_and_wall/(total_number_of_blocks - 1 )$.
+$Wall = number of blocks between head and wall/(total number of blocks - 1 )$.
 
 
 **Metric for Food:**
 It is good for snake to move in the direction of food, so One is given when no blocks are present in between Head and Food and Zero is given when no food is present in that direction.
 
 
-$Food = (total_number_of_blocks - number_of_blocks_between_head_and_wall - 1)/(total_number_of_blocks - 1 )$.
+$Food = ( total number of blocks - number of blocks between head and wall - 1)/(total number of blocks - 1 )$.
 
 The another input to our snake is the it's directions. It should keep. track of where it currently is to make move in another direction. 
 
 **Value for Head Direction:** This is a simple one-hot encoding for the direction.  
+
+
 ![head_direction](/img/head_direction.png)
 
 
@@ -91,6 +95,7 @@ weight size is 268 and population_size is the total number of snakes we want to 
 We have to differentiate the great Snake from weak. snake's fitness is based on its score and number of steps it taken to achieve that score, so we created a function by using Steps and Score as variables which will helps the Snake in getting maximum score in less steps.  
 I've used the following fitness function that evaluates fitness of snakes relative to score and steps taken. 
 
+
 ![fitness_function](/img/fitness_function.png)
 
 
@@ -103,6 +108,8 @@ The process selects the best fit snakes from the entire population according to 
 We take the parents selected from the above process to produce a new set of offsprings. We take 50 parents and iterate over (population_size - parent_length) times and use uniform crossover method to produce new offspring from these parents. 
 we later add our 50 parents to the population set. This process will preserve the best fit snakes, even if the crossover and mutation yield bad set of population.
 The unifrom crossover can be explained likewise. 
+
+
 ![crossover](/img/crossover.png)
 
 #### Mutation 
